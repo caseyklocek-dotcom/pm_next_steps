@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Practicing Musician × YMCA — Next Steps Roadmap</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --brand-bg:#211E1C;
+    --brand-card:#2C2623;
+    --brand-border:#3A3532;
+    --brand-text:#FFFFFF;
+    --brand-muted:#6B7280;
+    --brand-primary:#355E8D;
+    --brand-accent:#B87333;
+    --brand-positive:#5eead4;
+    --brand-negative:#8B2E2E;
+    --brand-hero-a: rgba(184,115,51,0.25);
+    --brand-hero-b: rgba(53,94,141,0.25);
+    --ring:rgba(184,115,51,.25);
+  }
+  html,body{height:100%}
+  body{background:var(--brand-bg);color:var(--brand-text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .card{background:#211E1C;border:1px solid #3A3532;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.02)}
+  .soft{background:#1B1715;border:1px solid #3A3532;border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.02)}
+  .hero{background:
+    radial-gradient(1100px 500px at 10% -10%, var(--brand-hero-a), transparent),
+    radial-gradient(900px 400px at 110% -20%, var(--brand-hero-b), transparent),
+    linear-gradient(135deg, var(--brand-bg), #0c1428 40%, #0d1a30)}
+  .focus-ring:focus{outline:none;box-shadow:0 0 0 6px var(--ring)}
+  .kpi{font-variant-numeric:tabular-nums}
+  .muted{color:var(--brand-muted)}
+  .glow{box-shadow:0 2px 15px rgba(184,115,51,.25)}
+  .field{background:#1B1715;border:1px solid #3A3532;border-radius:12px;color:#e5e7eb;padding:10px 14px;width:100%;font-size:14px}
+  .field::placeholder{color:#9ca3af}
+  input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.6;cursor:pointer}
+  input[type=date]::-webkit-calendar-picker-indicator:hover{opacity:1}
+  .btn{background:var(--brand-accent);color:#1B1715;padding:12px 22px;border-radius:12px;font-weight:700;border:none;cursor:pointer;transition:filter .15s,transform .1s;font-size:14px}
+  .btn:hover{filter:brightness(1.08)}
+  .btn:active{transform:translateY(1px)}
+  .btn:disabled{opacity:.35;cursor:not-allowed;filter:none}
+  .btn-ghost{background:transparent;color:#e5e7eb;border:1px solid #3A3532;padding:12px 22px;border-radius:12px;font-weight:600;cursor:pointer;transition:all .15s;font-size:14px}
+  .btn-ghost:hover{background:#1B1715;border-color:#5a504a}
+  .btn-ghost:disabled{opacity:.35;cursor:not-allowed}
+
+  .logo-glow{filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 3px 10px rgba(255,255,255,.20)) drop-shadow(0 0 14px rgba(184,115,51,.25))}
+
+  /* Sticky progress bar */
+  .progress-bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(33,30,28,.92);backdrop-filter:blur(14px);
+    border-bottom:1px solid #3A3532;
+    padding:14px 24px;
+  }
+  .progress-track{height:6px;background:#1B1715;border-radius:999px;overflow:hidden;position:relative}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--brand-primary),var(--brand-accent));border-radius:999px;transition:width .35s ease}
+
+  /* Running discount tracker pill */
+  .tracker-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(184,115,51,.08);border:1px solid rgba(184,115,51,.3);
+    color:var(--brand-accent);padding:6px 14px;border-radius:999px;
+    font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;
+    transition:background .3s, border-color .3s, color .3s, box-shadow .3s;
+  }
+  .tracker-pill.empty{background:rgba(107,114,128,.08);border-color:#3A3532;color:#9ca3af}
+  .tracker-pill.saving{
+    background:rgba(94,234,212,.1);
+    border-color:rgba(94,234,212,.4);
+    color:#5eead4;
+    box-shadow:0 0 12px rgba(94,234,212,.15);
+  }
+  .tracker-pill .dot{width:7px;height:7px;border-radius:999px;background:var(--brand-accent);animation:pulse 2s ease-in-out infinite}
+  .tracker-pill.empty .dot{background:#6B7280;animation:none}
+  .tracker-pill.saving .dot{background:#5eead4}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  @keyframes popSave{
+    0%  {transform:scale(1)}
+    30% {transform:scale(1.06);box-shadow:0 0 22px rgba(94,234,212,.35);filter:brightness(1.15)}
+    70% {transform:scale(1.02)}
+    100%{transform:scale(1)}
+  }
+  .tracker-pill.popping{animation:popSave .45s ease-out}
+
+  /* Pathway cards */
+  .path-card{cursor:pointer;border:1px solid #3A3532;border-radius:16px;padding:24px;background:#1B1715;transition:all .15s;user-select:none;position:relative;height:100%}
+  .path-card:hover{border-color:#5a504a;transform:translateY(-2px)}
+  .path-card.selected{border-color:var(--brand-accent);box-shadow:0 0 0 2px rgba(184,115,51,.2), 0 8px 24px rgba(184,115,51,.12);background:rgba(184,115,51,.06)}
+  .path-card .badge{display:inline-block;background:rgba(53,94,141,.3);border:1px solid rgba(53,94,141,.5);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;color:#93c5fd;text-transform:uppercase;letter-spacing:.05em}
+  .path-card.selected .badge{background:rgba(184,115,51,.25);border-color:var(--brand-accent);color:var(--brand-accent)}
+  .path-card .check{position:absolute;top:16px;right:16px;width:24px;height:24px;border-radius:999px;border:2px solid #3A3532;display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;font-weight:700}
+  .path-card.selected .check{background:var(--brand-accent);border-color:var(--brand-accent);color:#1B1715}
+
+  /* Option buttons (tier) */
+  .opt-btn{background:#1B1715;border:1px solid #3A3532;border-radius:14px;padding:18px 14px;cursor:pointer;transition:all .15s;text-align:center;color:#9ca3af;font-size:13px;font-weight:600}
+  .opt-btn:hover{border-color:#5a504a;color:#e5e7eb}
+  .opt-btn.selected{background:rgba(184,115,51,.08);border-color:var(--brand-accent);color:var(--brand-accent);box-shadow:0 0 0 1px rgba(184,115,51,.25)}
+  .opt-btn .opt-pct{display:block;font-size:22px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+
+  /* Range slider */
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;background:#3A3532;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:999px;background:var(--brand-accent);border:2px solid #1B1715;box-shadow:0 0 0 4px rgba(184,115,51,.25);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:999px;background:var(--brand-accent);border:2px solid #1B1715;cursor:pointer}
+
+  /* Journey stepper (full-journey, not wizard) */
+  .stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:flex-start;position:relative;padding:8px 0}
+  .step{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;text-align:center;padding:0 8px}
+  .step-dot{width:38px;height:38px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#1B1715;border:2px solid #3A3532;color:#6B7280;font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;transition:all .25s}
+  .step-dot.done{background:rgba(94,234,212,.12);border-color:#5eead4;color:#5eead4}
+  .step-dot.current{background:var(--brand-accent);border-color:var(--brand-accent);color:#1B1715;box-shadow:0 0 0 6px rgba(184,115,51,.18)}
+  .step-label{margin-top:10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#9ca3af;line-height:1.3}
+  .step.current .step-label{color:var(--brand-accent)}
+  .step.done .step-label{color:#5eead4}
+  .step-sub{font-size:10px;color:#6B7280;margin-top:2px}
+  .stepper::before{content:"";position:absolute;left:10%;right:10%;top:19px;height:2px;background:#3A3532;z-index:1}
+
+  /* Ledger */
+  .ledger-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed rgba(106,90,80,.4)}
+  .ledger-row:last-child{border-bottom:none}
+  .ledger-row.total{padding-top:14px;margin-top:6px;border-top:1px solid #3A3532;border-bottom:none;font-weight:700}
+
+  /* Tranches table */
+  table.tranches{width:100%;border-collapse:separate;border-spacing:0}
+  table.tranches th, table.tranches td{padding:14px 16px;text-align:left;font-size:13px;border-bottom:1px solid #3A3532}
+  table.tranches th{background:#1B1715;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:11px}
+  table.tranches td.right{text-align:right;font-variant-numeric:tabular-nums}
+  table.tranches tbody tr:hover{background:rgba(184,115,51,.04)}
+  table.tranches tr.total-row td{border-top:2px solid var(--brand-accent);border-bottom:none;background:rgba(184,115,51,.08);font-weight:700;color:#fcd34d}
+
+  /* Step transitions */
+  .wizard-step{display:none;animation:fadeIn .35s ease}
+  .wizard-step.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Pill / utility */
+  .pill{display:inline-flex;align-items:center;gap:6px;background:rgba(94,234,212,.1);border:1px solid rgba(94,234,212,.3);color:#5eead4;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+  .savings-pill{display:inline-block;background:rgba(94,234,212,.12);color:#5eead4;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.03em;transition:opacity .3s,transform .3s}
+  .savings-pill.hidden-pill{opacity:0;transform:translateY(6px);pointer-events:none}
+  @keyframes pillPop{0%{opacity:0;transform:scale(.85) translateY(6px)}70%{transform:scale(1.06) translateY(-1px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+  .savings-pill.popping{animation:pillPop .5s ease-out forwards}
+  .tease-card{
+    background:linear-gradient(135deg, rgba(94,234,212,.06), rgba(53,94,141,.10));
+    border:1px solid rgba(94,234,212,.35);
+    border-radius:20px;padding:24px;
+    box-shadow:0 0 28px rgba(94,234,212,.08), inset 0 1px 0 rgba(94,234,212,.08);
+  }
+  .commit-card{background:linear-gradient(135deg, rgba(94,234,212,.06), rgba(53,94,141,.06));border:1px solid rgba(94,234,212,.25);border-radius:20px;padding:24px}
+
+  /* Final-step pathway forms */
+  .pathway-form{display:none}
+  .pathway-form.active{display:block}
+
+  @media print{
+    /* hide chrome */
+    .progress-bar, .no-print, #wizardNav, header { display:none !important }
+    /* hide every step except the current one */
+    .wizard-step { display:none !important }
+    .wizard-step.active { display:block !important }
+    /* clean white canvas */
+    html, body { background:#fff !important; color:#111 !important; font-size:13px }
+    main { padding:0 !important; margin:0 !important }
+    /* flatten cards */
+    .card, .soft, .commit-card, .tease-card {
+      background:#fff !important;
+      border:1px solid #ccc !important;
+      box-shadow:none !important;
+      border-radius:8px !important;
+    }
+    /* readable text — override inline colours */
+    * { color:#111 !important }
+    .muted { color:#555 !important }
+    /* keep accent highlights slightly distinct */
+    strong { color:#000 !important }
+    /* table */
+    table.tranches th { background:#f5f5f5 !important; color:#555 !important }
+    table.tranches tr.total-row td { background:#f0f0f0 !important; color:#000 !important }
+    /* no orphan rows */
+    tr { page-break-inside:avoid }
+    /* don't break inside a card */
+    .card { page-break-inside:avoid }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================== -->
+<!-- STICKY PROGRESS BAR + RUNNING DISCOUNT TRACKER -->
+<!-- ============================================================== -->
+<div class="progress-bar">
+  <div class="max-w-5xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+    <div class="flex items-center gap-3 min-w-0">
+      <img src="data:image/png;base64,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" alt="Practicing Musician" class="h-7 logo-glow shrink-0"/>
+      <div class="hidden md:block text-xs muted whitespace-nowrap">Next Steps Roadmap</div>
+      <div id="headerBranch" style="display:none;align-items:center;gap:6px" class="hidden md:flex">
+        <span style="color:#3A3532;font-size:14px">·</span>
+        <span id="headerBranchName" class="text-xs font-semibold whitespace-nowrap" style="color:var(--brand-accent)"></span>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 flex-1 min-w-0 max-w-md">
+      <div class="text-xs muted whitespace-nowrap">Step <span id="stepCounter">1</span> of <span id="stepTotal">8</span></div>
+      <div class="progress-track flex-1"><div id="progressFill" class="progress-fill" style="width:12.5%"></div></div>
+    </div>
+    <div class="tracker-pill empty" id="trackerPill">
+      <span class="dot"></span>
+      <span id="trackerText">No discount yet</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- HERO (only on step 1) -->
+<!-- ============================================================== -->
+<header class="hero" id="hero">
+  <div class="max-w-5xl mx-auto px-6 md:px-8 pt-12 pb-10 text-center">
+    <div class="text-xs uppercase tracking-widest text-slate-400">Post-LOI · Strategy Session · 2026</div>
+    <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mt-3" style="color:#f8fafc">
+      You signed the LOI.<br/>
+      <span style="color:var(--brand-accent)">Now let's get music in your branch.</span>
+    </h1>
+    <p class="mt-4 text-slate-300 max-w-2xl mx-auto">A guided walk-through of your pathway, your discount, your payment schedule, and our shared 3-year commitment to make your branch self-sufficient.</p>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-6 md:px-8 py-10">
+
+  <!-- ============================================================== -->
+  <!-- STEP 1: PERSONALIZE -->
+  <!-- ============================================================== -->
+  <section class="wizard-step active" data-step="1">
+    <div class="card p-6 md:p-10">
+      <div class="text-xs uppercase tracking-widest muted">Step 01 · Personalize</div>
+      <h2 class="text-2xl font-bold mt-1">Let's tailor this to your branch.</h2>
+      <p class="text-sm muted mt-2">Two quick fields so we can put your name on this plan. Everything from here on adapts to you.</p>
+
+      <div class="grid md:grid-cols-2 gap-5 mt-8">
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Branch / Association name</label>
+          <input id="branchName" type="text" class="field focus-ring" placeholder="e.g., Magic City YMCA"/>
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Executive on the call</label>
+          <input id="execName" type="text" class="field focus-ring" placeholder="e.g., Lisa Martinez, CEO"/>
+        </div>
+      </div>
+
+      <div class="mt-8 p-5 soft text-sm text-slate-300">
+        <strong style="color:var(--brand-accent)">What we'll cover today:</strong> where you are in our journey together, our standard investment, your three pathway options (with real-time discounts), your payment schedule, and the concrete next step you'll leave this call with.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- STEP 2: WHERE YOU ARE -->
+  <!-- ============================================================== -->
+  <section class="wizard-step" data-step="2">
+    <div class="card p-6 md:p-10">
+      <div class="flex items-baseline justify-between flex-wrap gap-3 mb-2">
+        <div>
+          <div class="text-xs uppercase tracking-widest muted">Step 02 · Where you are</div>
+          <h2 class="text-2xl font-bold mt-1">You're at the pathway decision.</h2>
+        </div>
+        <span class="pill">You are here</span>
+      </div>
+      <p class="text-sm muted mt-2">Here's the full 3-year arc from LOI to self-sufficiency. Today is stage 2.</p>
+
+      <div class="mt-10 mb-6">
+        <div class="stepper">
+          <div class="step done"><div class="step-dot">✓</div><div class="step-label">LOI Signed</div><div class="step-sub">Complete</div></div>
+          <div class="step current"><div class="step-dot">2</div><div class="step-label">Pathway Selected</div><div class="step-sub">Today's meeting</div></div>
+          <div class="step"><div class="step-dot">3</div><div class="step-label">Onboarding</div><div class="step-sub">Months 1–3</div></div>
+          <div class="step"><div class="step-dot">4</div><div class="step-label">Full Rollout</div><div class="step-sub">Months 4–12</div></div>
+          <div class="step"><div class="step-dot">5</div><div class="step-label">Self-Sufficient</div><div class="step-sub">End of Year 3</div></div>
+        </div>
+      </div>
+
+      <div class="mt-8 p-5 rounded-2xl" style="background:linear-gradient(135deg, rgba(94,234,212,.05), rgba(184,115,51,.05));border:1px solid rgba(94,234,212,.25)">
+        <div class="text-xs uppercase tracking-widest" style="color:#5eead4">Our commitment</div>
+        <div class="text-lg font-bold mt-1">By the end of Year 3, you'll never have to raise another donor dollar for music at your branch.</div>
+        <div class="text-sm muted mt-1">We build the membership revenue, group classes, and lesson commissions inside your branch so the program funds itself.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- STEP 3: THE INVESTMENT -->
+  <!-- ============================================================== -->
+  <section class="wizard-step" data-step="3">
+    <div class="card p-6 md:p-10">
+      <div class="text-xs uppercase tracking-widest muted">Step 03 · The investment</div>
+      <h2 class="text-2xl font-bold mt-1">Our standard 3-year raise per branch.</h2>
+      <p class="text-sm muted mt-2">Every branch starts at the same number. How you approach the initial raise is where we start peeling away the discounts.</p>
+
+      <div class="grid md:grid-cols-3 gap-5 mt-8">
+        <div class="soft p-5">
+          <div class="text-xs uppercase tracking-widest muted">Year 1 · Launch</div>
+          <div class="kpi text-3xl font-extrabold mt-1" style="color:#f8fafc">$170,000</div>
+          <div class="text-xs muted mt-2">Onboarding, flagship 5-week class, full curriculum, rollout across all programs.</div>
+        </div>
+        <div class="soft p-5">
+          <div class="text-xs uppercase tracking-widest muted">Year 2 · Sustain</div>
+          <div class="kpi text-3xl font-extrabold mt-1" style="color:#f8fafc">$65,000</div>
+          <div class="text-xs muted mt-2">Curriculum updates, facilitator support, platform access, reporting.</div>
+        </div>
+        <div class="soft p-5">
+          <div class="text-xs uppercase tracking-widest muted">Year 3 · Sustain</div>
+          <div class="kpi text-3xl font-extrabold mt-1" style="color:#f8fafc">$65,000</div>
+          <div class="text-xs muted mt-2">Same as Year 2. By the end of this year, your branch is self-sufficient.</div>
+        </div>
+      </div>
+
+      <div class="mt-8 p-6 rounded-2xl flex items-center justify-between flex-wrap gap-4" style="background:linear-gradient(135deg, rgba(184,115,51,.06), rgba(53,94,141,.06));border:1px solid rgba(184,115,51,.25)">
+        <div>
+          <div class="text-xs uppercase tracking-widest" style="color:var(--brand-accent)">Standard 3-Year Total</div>
+          <div class="text-sm muted mt-1">Before any discounts. We'll bring this down together.</div>
+        </div>
+        <div class="kpi text-4xl font-extrabold" style="color:var(--brand-accent)">$300,000</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- STEP 4: PATHWAY -->
+  <!-- ============================================================== -->
+  <section class="wizard-step" data-step="4">
+    <div class="card p-6 md:p-10">
+      <div class="text-xs uppercase tracking-widest muted">Step 04 · The big decision</div>
+      <h2 class="text-2xl font-bold mt-1">Choose your pathway.</h2>
+      <p class="text-sm muted mt-2">This is the biggest lever on your discount. Pick the one that fits your branch.</p>
+
+      <div class="grid md:grid-cols-3 gap-4 mt-8">
+        <div class="path-card" data-pathway="standard" onclick="selectPathway('standard')">
+          <div class="check">✓</div>
+          <span class="badge">0% Discount</span>
+          <div class="text-lg font-bold mt-3" style="color:#f8fafc">Standard Rollout</div>
+          <div class="text-xs muted mt-1">We raise the funds. You wait.</div>
+          <div class="text-sm mt-3 text-slate-300">Practicing Musician fundraises on your behalf. You launch when funding is secured — could be 6–18 months.</div>
+        </div>
+
+        <div class="path-card" data-pathway="donor" onclick="selectPathway('donor')">
+          <div class="check">✓</div>
+          <span class="badge">10% Discount</span>
+          <div class="text-lg font-bold mt-3" style="color:#f8fafc">Donor-Raised in Your Network</div>
+          <div class="text-xs muted mt-1">You bring the donor.</div>
+          <div class="text-sm mt-3 text-slate-300">A donor from your network funds Years 1–3. Launch as soon as the donor commits. <strong style="color:#5eead4">10% off — in perpetuity.</strong></div>
+        </div>
+
+        <div class="path-card" data-pathway="outright" onclick="selectPathway('outright')">
+          <div class="check">✓</div>
+          <span class="badge">15% Discount · Best Value</span>
+          <div class="text-lg font-bold mt-3" style="color:#f8fafc">Branch Pays Outright</div>
+          <div class="text-xs muted mt-1">Branch funds directly. Fastest launch.</div>
+          <div class="text-sm mt-3 text-slate-300">Branch covers Years 1–3 from operating budget or reserves. <strong style="color:#5eead4">15% off — in perpetuity.</strong></div>
+        </div>
+      </div>
+
+      <div class="mt-6 p-4 soft text-sm hidden" id="pathwayConfirm">
+        <span class="muted">Locked in:</span> <strong id="pathwayConfirmText" style="color:var(--brand-accent)"></strong> — <span id="pathwaySavingsText"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- STEP 5: ASSOCIATION TIER -->
+  <!-- ============================================================== -->
+  <section class="wizard-step" data-step="5">
+    <div class="card p-6 md:p-10">
+      <div class="text-xs uppercase tracking-widest muted">Step 05 · Stack the discount</div>
+      <h2 class="text-2xl font-bold mt-1">Are other branches signing this quarter?</h2>
+      <p class="text-sm muted mt-2">Multi-branch commitments unlock association-wide discounts that <strong style="color:var(--brand-accent)">stack on top of</strong> your pathway choice. The more branches, the more everyone saves.</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
+        <div class="opt-btn selected" data-tier="1" onclick="selectTier(1)">
+          Just this branch
+          <span class="opt-pct">+0%</span>
+        </div>
+        <div class="opt-btn" data-tier="2" onclick="selectTier(2)">
+          2–3 branches
+          <span class="opt-pct">+5%</span>
+        </div>
+        <div class="opt-btn" data-tier="4" onclick="selectTier(4)">
+          4–7 branches
+          <span class="opt-pct">+7%</span>
+        </div>
+        <div class="opt-btn" data-tier="8" onclick="selectTier(8)">
+          8+ branches <span class="text-[10px]" style="color:#5eead4">MAX</span>
+          <span class="opt-pct">+10%</span>
+        </div>
+      </div>
+
+      <div class="mt-8 soft p-5">
+        <div class="text-xs uppercase tracking-widest muted mb-2">Where you stand now</div>
+        <div class="ledger-row">
+          <span>Pathway · <span id="step5PathwayLabel" class="muted">—</span></span>
+          <span class="kpi font-semibold" id="step5PathwayPct">0%</span>
+        </div>
+        <div class="ledger-row">
+          <span>Association tier · <span id="step5TierLabel" class="muted">Single branch</span></span>
+          <span class="kpi font-semibold" id="step5TierPct">+0%</span>
+        </div>
+        <div class="ledger-row total">
+          <span>Running discount</span>
+          <span class="kpi text-xl" style="color:var(--brand-accent)" id="step5TotalPct">0%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- STEP 6: DONOR-NETWORK BONUS (donor pathway only — auto-skipped otherwise) -->
+  <!-- ============================================================== -->
+  <section class="wizard-step" data-step="6">
+    <div class="card p-6 md:p-10">
+      <div class="text-xs uppercase tracking-widest muted">Step 06 · Donor-network bonus</div>
+      <h2 class="text-2xl font-bold mt-1">Will this same donor fund other branches?</h2>
+      <p class="text-sm muted mt-2">This bonus only unlocks when <strong style="color:#f8fafc">one donor</strong> commits to funding multiple branches in the same agreement. If your donor is only funding this branch, leave this at 0. If they're willing to fund others as well, slide up — you earn <strong style="color:var(--brand-accent)">+1% per branch they commit to</strong>, up to +10% for 10 branches.</p>
+
+      <div class="mt-8 soft p-6">
+        <div class="flex items-center justify-between mb-4">
+          <label class="text-sm font-semibold">Additional branches this donor will commit to funding</label>
+          <span class="kpi text-2xl font-bold" style="color:var(--brand-accent)" id="donorBranchVal">0</span>
+        </div>
+        <input id="donorBranches" type="range" min="0" max="10" step="1" value="0"/>
+        <div class="flex justify-between text-[10px] muted mt-2"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+      </div>
+
+      <div class="mt-8 soft p-5">
+        <div class="text-xs uppercase tracking-widest muted mb-2">Your stack so far</div>
+        <div class="ledger-row">
+          <span>Pathway · <span id="step6PathwayLabel" class="muted">—</span></span>
+          <span class="kpi font-semibold" id="step6PathwayPct">0%</span>
+        </div>
+        <div class="ledger-row">
+          <span>Association tier · <span id="step6TierLabel" class="muted">—</span></span>
+          <span class="kpi font-semibold" id="step6TierPct">+0%</span>
+        </div>
+        <div class="ledger-row">
+          <span>Donor-network bonus · <span id="step6DonorLabel" class="muted">1 branch funded</span></span>
+          <span class="kpi font-semibold" id="step6DonorPct">+0%</span>
+        </div>
+        <div class="ledger-row total">
+          <span>Running discount</span>
+          <span class="kpi text-xl" style="color:var(--brand-accent)" id="step6TotalPct">0%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- STEP 7: TOTAL + TRANCHES -->
+  <!-- ============================================================== -->
+  <section class="wizard-step" data-step="7">
+    <div class="card p-6 md:p-10">
+      <div class="text-xs uppercase tracking-widest muted">Step 07 · The math, locked in</div>
+      <h2 class="text-2xl font-bold mt-1">Here's what you'll actually pay.</h2>
+      <p class="text-sm muted mt-2">Discount applied. Payment schedule below. $50K kicks off the flagship — the rest is on a Year-by-Year cadence.</p>
+
+      <!-- Big total + ledger -->
+      <div class="grid md:grid-cols-5 gap-6 mt-8 items-stretch">
+        <div class="md:col-span-3 soft p-5">
+          <div class="text-xs uppercase tracking-widest muted mb-3">Your discount stack</div>
+          <div class="ledger-row">
+            <span>Pathway · <span id="step7PathwayLabel" class="muted">—</span></span>
+            <span class="kpi font-semibold" id="step7PathwayPct">0%</span>
+          </div>
+          <div class="ledger-row">
+            <span>Association tier · <span id="step7TierLabel" class="muted">—</span></span>
+            <span class="kpi font-semibold" id="step7TierPct">+0%</span>
+          </div>
+          <div class="ledger-row" id="step7DonorRow" style="display:none">
+            <span>Donor-network bonus · <span id="step7DonorLabel" class="muted">—</span></span>
+            <span class="kpi font-semibold" id="step7DonorPct">+0%</span>
+          </div>
+          <div class="ledger-row total">
+            <span>Total discount applied</span>
+            <span class="kpi text-xl" style="color:var(--brand-accent)" id="step7TotalPct">0%</span>
+          </div>
+        </div>
+        <div class="md:col-span-2 soft glow p-5 text-center flex flex-col justify-center">
+          <div class="text-xs uppercase tracking-widest muted">Your 3-year total</div>
+          <div class="kpi text-4xl font-extrabold mt-2" style="color:var(--brand-accent)" id="step7NewTotal">$300,000</div>
+          <div class="text-xs muted mt-1" id="step7OldTotal">vs. $300,000 standard</div>
+          <div class="mt-3"><span class="savings-pill" id="step7SavingsPill">$0 saved</span></div>
+        </div>
+      </div>
+
+      <!-- Tranches -->
+      <h3 class="mt-10 mb-3 text-base font-bold" style="color:#e5e7eb">Your payment schedule</h3>
+      <div class="overflow-x-auto soft" style="padding:0">
+        <table class="tranches">
+          <thead>
+            <tr>
+              <th>Payment</th>
+              <th>Timing</th>
+              <th>What it funds</th>
+              <th class="right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Tranche 1</strong><div class="text-[11px] muted">Flagship launch</div></td>
+              <td>At kickoff</td>
+              <td>Facilitator training, LMS setup, 5-week flagship class.</td>
+              <td class="right kpi" id="tranche1">$50,000</td>
+            </tr>
+            <tr>
+              <td><strong>Tranche 2</strong><div class="text-[11px] muted">Full rollout</div></td>
+              <td>Month 4</td>
+              <td>Nine months of curriculum, facilitator cohorts, branch rollout.</td>
+              <td class="right kpi" id="tranche2">$120,000</td>
+            </tr>
+            <tr>
+              <td><strong>Tranche 3</strong><div class="text-[11px] muted">Year 2 prepay</div></td>
+              <td>End of Year 1</td>
+              <td>Year 2 sustain.</td>
+              <td class="right kpi" id="tranche3">$65,000</td>
+            </tr>
+            <tr>
+              <td><strong>Tranche 4</strong><div class="text-[11px] muted">Year 3 prepay</div></td>
+              <td>End of Year 2</td>
+              <td>Year 3 sustain — final guided year before self-sufficiency.</td>
+              <td class="right kpi" id="tranche4">$65,000</td>
+            </tr>
+            <tr class="total-row">
+              <td><strong>3-Year Total</strong></td>
+              <td>—</td>
+              <td>Then nothing. Your branch runs the program on its own revenue.</td>
+              <td class="right kpi" id="trancheTotal">$300,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sustainability tease -->
+      <div class="tease-card mt-8">
+        <div class="grid md:grid-cols-5 gap-6 items-center">
+          <div class="md:col-span-3">
+            <div class="text-xs uppercase tracking-widest" style="color:#5eead4;letter-spacing:.08em">✦ Why Year-3 self-sufficiency isn't just a slogan</div>
+            <h3 class="text-xl font-bold mt-2" style="color:#f8fafc">Want to see how your branch builds the revenue to fund itself?</h3>
+            <p class="text-sm text-slate-300 mt-2">Our Branch Revenue Calculator models membership lift, group classes, and lesson commissions — customized to <span id="teaseBranchName" class="font-semibold" style="color:#5eead4">your branch</span>.</p>
+          </div>
+          <div class="md:col-span-2 text-center md:text-right">
+            <a href="PM_YMCA_Branch_Calculator.html" target="_blank" class="btn inline-block">Open the Revenue Calculator →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- STEP 8: LOCK IT IN (pathway-specific) -->
+  <!-- ============================================================== -->
+  <section class="wizard-step" data-step="8">
+    <div class="card p-6 md:p-10">
+      <div class="text-xs uppercase tracking-widest muted">Step 08 · Today's commitment</div>
+      <h2 class="text-2xl font-bold mt-1">Lock in <span id="finalBranchName" style="color:var(--brand-accent)">your branch</span>'s next concrete step.</h2>
+      <p class="text-sm muted mt-2">This is what we'll both do between today and our next touchpoint.</p>
+
+      <!-- Recap strip -->
+      <div class="mt-6 p-5 soft flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div class="text-xs uppercase tracking-widest muted">Selected pathway</div>
+          <div class="text-lg font-bold mt-1" id="finalPathway">—</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-widest muted">Total discount</div>
+          <div class="text-lg font-bold mt-1" style="color:var(--brand-accent)" id="finalDiscount">0%</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-widest muted">3-year investment</div>
+          <div class="text-lg font-bold mt-1" id="finalTotal">$300,000</div>
+        </div>
+      </div>
+
+      <!-- ====================================================== -->
+      <!-- STANDARD PATHWAY FORM -->
+      <!-- ====================================================== -->
+      <div class="pathway-form mt-8" data-form="standard">
+        <div class="commit-card">
+          <div class="text-xs uppercase tracking-widest" style="color:#5eead4">Your standard rollout · what we owe YOU</div>
+          <h3 class="text-xl font-bold mt-1">Practicing Musician will start fundraising this week.</h3>
+          <p class="text-sm muted mt-2">You don't owe anything. Here's how we'll keep you in the loop while we work the donor list.</p>
+
+          <div class="grid md:grid-cols-2 gap-5 mt-6">
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Preferred touchpoint cadence</label>
+              <select id="stdCadence" class="field">
+                <option>Monthly update call (recommended)</option>
+                <option>Bi-weekly update call</option>
+                <option>Email-only updates, quarterly call</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Best day/time for the standing call</label>
+              <input id="stdSlot" type="text" class="field" placeholder="e.g., 2nd Tuesday, 10am ET"/>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Anyone else who should be CC'd?</label>
+              <input id="stdCc" type="text" class="field" placeholder="e.g., COO, board chair"/>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Local donors you'd be open to us approaching</label>
+              <input id="stdReferrals" type="text" class="field" placeholder="Optional — names or 'none'"/>
+            </div>
+          </div>
+
+          <div class="mt-6 p-4 rounded-xl" style="background:rgba(94,234,212,.05);border:1px solid rgba(94,234,212,.2)">
+            <div class="text-xs uppercase tracking-widest" style="color:#5eead4">We commit to:</div>
+            <ul class="text-sm mt-2 space-y-1 text-slate-300 list-disc pl-5">
+              <li>Begin donor prospecting within <strong>7 days</strong>.</li>
+              <li>Send our first prospecting report at the end of <strong>Month 1</strong>.</li>
+              <li>Update you on every commitment over $25K within <strong>48 hours</strong>.</li>
+              <li>Launch the flagship within <strong>30 days</strong> of full funding.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================== -->
+      <!-- DONOR PATHWAY FORM (qualify the donor) -->
+      <!-- ====================================================== -->
+      <div class="pathway-form mt-8" data-form="donor">
+        <div class="commit-card">
+          <div class="text-xs uppercase tracking-widest" style="color:#5eead4">Your donor-raised path · qualify the donor</div>
+          <h3 class="text-xl font-bold mt-1">Tell us about the donor who's funding this.</h3>
+          <p class="text-sm muted mt-2">We'll prep a one-page brief, sample ask script, and pitch deck so your introduction is buttoned up.</p>
+
+          <div class="grid md:grid-cols-2 gap-5 mt-6">
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Donor name (or working alias)</label>
+              <input id="donorName" type="text" class="field" placeholder="e.g., The Harrington Family Foundation"/>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Your relationship to the donor</label>
+              <input id="donorRelationship" type="text" class="field" placeholder="e.g., Long-time board donor, 8 years"/>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Has this donor given at this level before?</label>
+              <select id="donorHistory" class="field">
+                <option>Yes — gives at this level or higher annually</option>
+                <option>Yes — has given a one-time gift this size before</option>
+                <option>Stretch — would be their largest gift to us</option>
+                <option>Unsure</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Target intro / ask date</label>
+              <input id="donorAskDate" type="date" class="field"/>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Any context about why this donor cares about music or youth programs?</label>
+              <textarea id="donorContext" class="field" rows="3" placeholder="One or two sentences — helps us tailor the brief."></textarea>
+            </div>
+          </div>
+
+          <div class="mt-6 p-4 rounded-xl" style="background:rgba(94,234,212,.05);border:1px solid rgba(94,234,212,.2)">
+            <div class="text-xs uppercase tracking-widest" style="color:#5eead4">What happens within 48 hours of this call:</div>
+            <ul class="text-sm mt-2 space-y-1 text-slate-300 list-disc pl-5">
+              <li>You receive a one-page donor brief tailored to this donor's profile.</li>
+              <li>Sample ask script + objection responses.</li>
+              <li>The full pitch deck (with your branch's name and your discounted total of <strong id="donorPitchTotal">$300,000</strong>).</li>
+              <li>Standing biweekly check-in until the donor commits.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================== -->
+      <!-- OUTRIGHT PATHWAY FORM (pick flagship start date) -->
+      <!-- ====================================================== -->
+      <div class="pathway-form mt-8" data-form="outright">
+        <div class="commit-card">
+          <div class="text-xs uppercase tracking-widest" style="color:#5eead4">Your outright path · let's get on the calendar</div>
+          <h3 class="text-xl font-bold mt-1">Pick when the flagship build begins.</h3>
+          <p class="text-sm muted mt-2">DocuSign goes out within 48 hours. Once signed and Tranche 1 received, we kick off facilitator training and the 5-week flagship class.</p>
+
+          <div class="grid md:grid-cols-2 gap-5 mt-6">
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Target flagship start date</label>
+              <input id="outrightStart" type="date" class="field"/>
+              <p class="text-[11px] muted mt-1">We recommend 30–45 days from today to give you time to align internally.</p>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Tranche 1 payment method</label>
+              <select id="outrightPayment" class="field">
+                <option>ACH / bank transfer</option>
+                <option>Check</option>
+                <option>Credit card (3% processing fee)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Authorized signer for DocuSign</label>
+              <input id="outrightSigner" type="text" class="field" placeholder="Name, title"/>
+            </div>
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Signer email</label>
+              <input id="outrightSignerEmail" type="email" class="field" placeholder="name@ymca.org"/>
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs uppercase tracking-widest text-slate-400 mb-2">Facilitator(s) on your team to train</label>
+              <input id="outrightFacilitators" type="text" class="field" placeholder="Names + roles, or 'TBD'"/>
+            </div>
+          </div>
+
+          <div class="mt-6 p-4 rounded-xl" style="background:rgba(94,234,212,.05);border:1px solid rgba(94,234,212,.2)">
+            <div class="text-xs uppercase tracking-widest" style="color:#5eead4">What happens next:</div>
+            <ul class="text-sm mt-2 space-y-1 text-slate-300 list-disc pl-5">
+              <li><strong>Within 48 hours:</strong> DocuSign service agreement sent to your authorized signer.</li>
+              <li><strong>Within 30 days:</strong> Sign + remit Tranche 1 (<span id="outrightTranche1">$50,000</span>).</li>
+              <li><strong>Flagship build begins:</strong> <span id="outrightStartEcho" style="color:var(--brand-accent)">your selected date</span>.</li>
+              <li><strong>Standing biweekly check-ins</strong> through Months 1–3.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="mt-8 flex flex-wrap items-center justify-end gap-3 no-print">
+        <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- WIZARD NAVIGATION -->
+  <!-- ============================================================== -->
+  <div id="wizardNav" class="mt-8 flex items-center justify-between gap-3 no-print">
+    <button class="btn-ghost" id="backBtn" onclick="goBack()">← Back</button>
+    <div class="text-xs muted" id="navHint">Fill in your branch info to continue.</div>
+    <button class="btn" id="nextBtn" onclick="goNext()">Next →</button>
+  </div>
+
+</main>
+
+<script>
+/* ===================== Pricing constants ===================== */
+const Y1_TOTAL = 170000;
+const YEAR_SUSTAIN = 65000;
+const TOTAL_3YR = 300000;
+const TRANCHE_1 = 50000;
+const TRANCHE_2_BASE = 120000;
+
+/* ===================== State ===================== */
+const state = {
+  step: 1,
+  pathway: null,
+  tier: 1,
+  donorBranches: 0,
+};
+
+/* ===================== Helpers ===================== */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+const fmt = v => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
+
+const pathwayPct = p => p === 'outright' ? 0.15 : p === 'donor' ? 0.10 : 0;
+const tierPct = t => t === 8 ? 0.10 : t === 4 ? 0.07 : t === 2 ? 0.05 : 0;
+const donorBonusPct = () => state.pathway !== 'donor' ? 0 : Math.min(state.donorBranches, 10) / 100;
+
+const tierLabel = t => t === 8 ? '8+ branches' : t === 4 ? '4–7 branches' : t === 2 ? '2–3 branches' : 'Single branch';
+const pathwayLabel = p => p === 'outright' ? 'Branch Pays Outright'
+                        : p === 'donor'    ? 'Donor-Raised in Network'
+                        : p === 'standard' ? 'Standard Rollout'
+                        : '—';
+
+function totals(){
+  const pPct = pathwayPct(state.pathway);
+  const tPct = tierPct(state.tier);
+  const dPct = donorBonusPct();
+  const totalPct = pPct + tPct + dPct;
+  const tranche2 = TRANCHE_2_BASE * (1 - totalPct);
+  const y1 = TRANCHE_1 + tranche2;
+  const y2 = YEAR_SUSTAIN * (1 - totalPct);
+  const y3 = YEAR_SUSTAIN * (1 - totalPct);
+  const total3yr = y1 + y2 + y3;
+  const savings = TOTAL_3YR - total3yr;
+  return { pPct, tPct, dPct, totalPct, tranche2, y1, y2, y3, total3yr, savings };
+}
+
+/* ===================== Step config (visible step order) ===================== */
+function visibleSteps(){
+  // Step 6 is donor-only; skip it for standard / outright
+  return state.pathway === 'donor' ? [1,2,3,4,5,6,7,8] : [1,2,3,4,5,7,8];
+}
+function totalSteps(){ return visibleSteps().length; }
+function currentIndex(){ return visibleSteps().indexOf(state.step); }
+
+/* ===================== Selection handlers ===================== */
+function selectPathway(p){
+  state.pathway = (state.pathway === p) ? null : p;
+  $$('.path-card').forEach(el => el.classList.toggle('selected', el.dataset.pathway === state.pathway));
+
+  if (state.pathway){
+    $('#pathwayConfirm').classList.remove('hidden');
+    $('#pathwayConfirmText').textContent = pathwayLabel(state.pathway);
+    const pct = pathwayPct(state.pathway);
+    $('#pathwaySavingsText').textContent = pct > 0
+      ? `${(pct*100).toFixed(0)}% off, applied in perpetuity`
+      : 'No discount, but we do the fundraising';
+  } else {
+    $('#pathwayConfirm').classList.add('hidden');
+  }
+  if (state.pathway !== 'donor'){
+    state.donorBranches = 0;
+    $('#donorBranches').value = 0;
+    $('#donorBranchVal').textContent = '0';
+  }
+  renderTracker();
+  renderNav();
+}
+
+function selectTier(t){
+  state.tier = t;
+  $$('[data-tier]').forEach(el => el.classList.toggle('selected', Number(el.dataset.tier) === t));
+  renderTracker();
+  renderStep5();
+  renderStep6();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  $('#donorBranches').addEventListener('input', e => {
+    state.donorBranches = Number(e.target.value);
+    $('#donorBranchVal').textContent = state.donorBranches;
+    renderTracker();
+    renderStep6();
+  });
+  $('#branchName').addEventListener('input', () => {
+    const n = $('#branchName').value.trim();
+    $('#teaseBranchName').textContent = n || 'your branch';
+    $('#finalBranchName').textContent = n || 'your branch';
+    const hb = $('#headerBranch');
+    if (n) {
+      $('#headerBranchName').textContent = n;
+      hb.style.display = 'flex';
+    } else {
+      hb.style.display = 'none';
+    }
+    renderNav();
+  });
+  $('#outrightStart').addEventListener('input', e => {
+    const v = e.target.value;
+    $('#outrightStartEcho').textContent = v ? new Date(v + 'T00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : 'your selected date';
+  });
+});
+
+/* ===================== Render: tracker pill ===================== */
+let _lastTrackerText = '';
+function renderTracker(){
+  const { totalPct, total3yr } = totals();
+  const pill = $('#trackerPill');
+  const txt = $('#trackerText');
+  let newText;
+
+  if (totalPct > 0){
+    pill.classList.remove('empty');
+    pill.classList.add('saving');
+    newText = `${(totalPct*100).toFixed(0)}% off · ${fmt(total3yr)}`;
+  } else if (state.pathway){
+    pill.classList.remove('saving');
+    pill.classList.add('empty');
+    newText = `${pathwayLabel(state.pathway)} · ${fmt(total3yr)}`;
+  } else {
+    pill.classList.remove('saving');
+    pill.classList.add('empty');
+    newText = 'No discount yet';
+  }
+
+  if (newText !== _lastTrackerText){
+    _lastTrackerText = newText;
+    txt.textContent = newText;
+    // trigger pop only when saving
+    if (totalPct > 0){
+      pill.classList.remove('popping');
+      void pill.offsetWidth; // reflow to restart animation
+      pill.classList.add('popping');
+      pill.addEventListener('animationend', () => pill.classList.remove('popping'), { once: true });
+    }
+  }
+}
+
+/* ===================== Render per-step ===================== */
+function renderStep5(){
+  const { pPct, tPct, totalPct } = totals();
+  $('#step5PathwayLabel').textContent = pathwayLabel(state.pathway);
+  $('#step5PathwayPct').textContent = (pPct*100).toFixed(0) + '%';
+  $('#step5TierLabel').textContent = tierLabel(state.tier);
+  $('#step5TierPct').textContent = '+' + (tPct*100).toFixed(0) + '%';
+  $('#step5TotalPct').textContent = (totalPct*100).toFixed(0) + '%';
+}
+function renderStep6(){
+  const { pPct, tPct, dPct, totalPct } = totals();
+  $('#step6PathwayLabel').textContent = pathwayLabel(state.pathway);
+  $('#step6PathwayPct').textContent = (pPct*100).toFixed(0) + '%';
+  $('#step6TierLabel').textContent = tierLabel(state.tier);
+  $('#step6TierPct').textContent = '+' + (tPct*100).toFixed(0) + '%';
+  $('#step6DonorLabel').textContent = state.donorBranches + (state.donorBranches === 1 ? ' branch' : ' branches') + ' funded';
+  $('#step6DonorPct').textContent = '+' + (dPct*100).toFixed(0) + '%';
+  $('#step6TotalPct').textContent = (totalPct*100).toFixed(0) + '%';
+}
+/* Counts a number element from startVal → endVal, interpolating color white→teal */
+function animateCount(startVal, endVal, duration, el, onDone){
+  const startRGB = [248, 250, 252]; // #f8fafc
+  const endRGB   = [94,  234, 212]; // #5eead4
+  const t0 = performance.now();
+  function tick(now){
+    const p = Math.min((now - t0) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3); // ease-out cubic
+    const val = Math.round(startVal + (endVal - startVal) * ease);
+    el.textContent = fmt(val);
+    const r = Math.round(startRGB[0] + (endRGB[0] - startRGB[0]) * ease);
+    const g = Math.round(startRGB[1] + (endRGB[1] - startRGB[1]) * ease);
+    const b = Math.round(startRGB[2] + (endRGB[2] - startRGB[2]) * ease);
+    el.style.color = `rgb(${r},${g},${b})`;
+    if (p < 1){ requestAnimationFrame(tick); } else {
+      el.textContent = fmt(endVal);
+      el.style.color = '#5eead4';
+      if (onDone) onDone();
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
+function renderStep7(){
+  const { pPct, tPct, dPct, totalPct, tranche2, y2, y3, total3yr, savings } = totals();
+
+  // Ledger
+  $('#step7PathwayLabel').textContent = pathwayLabel(state.pathway);
+  $('#step7PathwayPct').textContent = (pPct*100).toFixed(0) + '%';
+  $('#step7TierLabel').textContent = tierLabel(state.tier);
+  $('#step7TierPct').textContent = '+' + (tPct*100).toFixed(0) + '%';
+  if (state.pathway === 'donor'){
+    $('#step7DonorRow').style.display = '';
+    $('#step7DonorLabel').textContent = state.donorBranches + (state.donorBranches === 1 ? ' branch' : ' branches') + ' funded';
+    $('#step7DonorPct').textContent = '+' + (dPct*100).toFixed(0) + '%';
+  } else {
+    $('#step7DonorRow').style.display = 'none';
+  }
+  $('#step7TotalPct').textContent = (totalPct*100).toFixed(0) + '%';
+
+  // Tranches (static — no animation needed)
+  $('#tranche1').textContent = fmt(TRANCHE_1);
+  $('#tranche2').textContent = fmt(tranche2);
+  $('#tranche3').textContent = fmt(y2);
+  $('#tranche4').textContent = fmt(y3);
+  $('#trancheTotal').textContent = fmt(total3yr);
+
+  // Total card — peel animation
+  const totalEl  = $('#step7NewTotal');
+  const pillEl   = $('#step7SavingsPill');
+  const oldEl    = $('#step7OldTotal');
+  const hasDiscount = totalPct > 0;
+
+  // Reset pill
+  pillEl.classList.remove('popping');
+  pillEl.classList.add('hidden-pill');
+  pillEl.textContent = savings > 0 ? fmt(savings) + ' saved' : '$0 saved';
+  oldEl.innerHTML = hasDiscount
+    ? `vs. <s style="opacity:.45">${fmt(TOTAL_3YR)}</s> standard`
+    : `vs. ${fmt(TOTAL_3YR)} standard`;
+
+  if (hasDiscount){
+    // Start at $300K white, animate down to discounted total in teal
+    totalEl.style.color = '#f8fafc';
+    totalEl.textContent = fmt(TOTAL_3YR);
+    setTimeout(() => {
+      animateCount(TOTAL_3YR, total3yr, 900, totalEl, () => {
+        // Savings pill pops in when animation lands
+        void pillEl.offsetWidth;
+        pillEl.classList.remove('hidden-pill');
+        pillEl.classList.add('popping');
+      });
+    }, 350); // brief pause so they register $300K before the peel
+  } else {
+    totalEl.style.color = 'var(--brand-accent)';
+    totalEl.textContent = fmt(total3yr);
+  }
+}
+function renderStep8(){
+  const { totalPct, total3yr } = totals();
+  $('#finalPathway').textContent = pathwayLabel(state.pathway);
+  $('#finalDiscount').textContent = (totalPct*100).toFixed(0) + '%';
+  $('#finalTotal').textContent = fmt(total3yr);
+  $('#donorPitchTotal').textContent = fmt(total3yr);
+  $('#outrightTranche1').textContent = fmt(TRANCHE_1);
+
+  // show only the correct pathway form
+  $$('.pathway-form').forEach(el => el.classList.toggle('active', el.dataset.form === state.pathway));
+}
+
+/* ===================== Nav ===================== */
+function showStep(n){
+  state.step = n;
+  $$('.wizard-step').forEach(el => el.classList.toggle('active', Number(el.dataset.step) === n));
+  $('#hero').style.display = (n === 1) ? '' : 'none';
+
+  // run per-step renders
+  if (n === 5) renderStep5();
+  if (n === 6) renderStep6();
+  if (n === 7) renderStep7();
+  if (n === 8) renderStep8();
+
+  // progress
+  const idx = currentIndex();
+  const total = totalSteps();
+  $('#stepCounter').textContent = idx + 1;
+  $('#stepTotal').textContent = total;
+  $('#progressFill').style.width = ((idx + 1) / total * 100) + '%';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderNav();
+}
+
+function goNext(){
+  const steps = visibleSteps();
+  const idx = currentIndex();
+  if (idx < steps.length - 1) showStep(steps[idx + 1]);
+}
+function goBack(){
+  const steps = visibleSteps();
+  const idx = currentIndex();
+  if (idx > 0) showStep(steps[idx - 1]);
+}
+
+function renderNav(){
+  const steps = visibleSteps();
+  const idx = currentIndex();
+  const last = idx === steps.length - 1;
+  const first = idx === 0;
+
+  $('#backBtn').disabled = first;
+  $('#nextBtn').disabled = false;
+  $('#nextBtn').textContent = last ? 'Done' : 'Next →';
+  $('#nextBtn').style.display = last ? 'none' : '';
+
+  // hint logic + gating
+  let hint = '';
+  if (state.step === 1){
+    const branch = $('#branchName').value.trim();
+    if (!branch){
+      hint = 'Enter your branch name to continue.';
+      $('#nextBtn').disabled = true;
+    } else {
+      hint = 'Ready when you are.';
+    }
+  } else if (state.step === 4){
+    if (!state.pathway){
+      hint = 'Pick a pathway to continue.';
+      $('#nextBtn').disabled = true;
+    } else {
+      hint = `${pathwayLabel(state.pathway)} selected — ${(pathwayPct(state.pathway)*100).toFixed(0)}% locked in.`;
+    }
+  } else if (state.step === 7){
+    hint = 'Ready to lock in your next concrete action?';
+  } else if (last){
+    hint = 'Use the buttons above to copy or print the summary.';
+  } else {
+    hint = 'Hit Next when ready.';
+  }
+  $('#navHint').textContent = hint;
+}
+
+/* ===================== Copy summary ===================== */
+function copySummary(){
+  const branch = $('#branchName').value.trim() || '[Branch]';
+  const exec   = $('#execName').value.trim()   || '[Executive]';
+  const { pPct, tPct, dPct, totalPct, tranche2, y2, y3, total3yr, savings } = totals();
+
+  let pathwaySpecific = '';
+  if (state.pathway === 'standard'){
+    pathwaySpecific = [
+      '',
+      'STANDARD ROLLOUT — PM COMMITS TO:',
+      '  • Begin donor prospecting within 7 days',
+      '  • Touchpoint cadence: ' + $('#stdCadence').value,
+      '  • Standing call slot: ' + ($('#stdSlot').value || 'TBD'),
+      '  • CC list: ' + ($('#stdCc').value || 'none'),
+      '  • Donor referrals from branch: ' + ($('#stdReferrals').value || 'none provided')
+    ].join('\n');
+  } else if (state.pathway === 'donor'){
+    pathwaySpecific = [
+      '',
+      'DONOR-RAISED — QUALIFY THE DONOR:',
+      '  • Donor: ' + ($('#donorName').value || 'TBD'),
+      '  • Relationship: ' + ($('#donorRelationship').value || 'TBD'),
+      '  • Giving history: ' + $('#donorHistory').value,
+      '  • Target ask date: ' + ($('#donorAskDate').value || 'TBD'),
+      '  • Context: ' + ($('#donorContext').value || 'TBD'),
+      '  • PM sends donor brief + script + pitch deck within 48 hours.'
+    ].join('\n');
+  } else if (state.pathway === 'outright'){
+    pathwaySpecific = [
+      '',
+      'BRANCH PAYS OUTRIGHT — CALENDAR LOCKED:',
+      '  • Flagship start date: ' + ($('#outrightStart').value || 'TBD'),
+      '  • Tranche 1 payment method: ' + $('#outrightPayment').value,
+      '  • Authorized signer: ' + ($('#outrightSigner').value || 'TBD'),
+      '  • Signer email: ' + ($('#outrightSignerEmail').value || 'TBD'),
+      '  • Facilitators to train: ' + ($('#outrightFacilitators').value || 'TBD'),
+      '  • DocuSign sent within 48 hours; Tranche 1 due within 30 days.'
+    ].join('\n');
+  }
+
+  const lines = [
+    'Practicing Musician × ' + branch + ' — Next Steps Summary',
+    'Executive: ' + exec,
+    'Date: ' + new Date().toLocaleDateString(),
+    '',
+    'PATHWAY: ' + pathwayLabel(state.pathway),
+    'Association tier: ' + tierLabel(state.tier) + ' (+' + (tPct*100).toFixed(0) + '%)',
+    state.pathway === 'donor' ? 'Donor-network bonus: ' + state.donorBranches + ' branch' + (state.donorBranches > 1 ? 'es' : '') + ' (+' + (dPct*100).toFixed(0) + '%)' : null,
+    'Total discount: ' + (totalPct*100).toFixed(0) + '%',
+    '',
+    'PAYMENT SCHEDULE:',
+    '  • Tranche 1 (at kickoff): ' + fmt(TRANCHE_1),
+    '  • Tranche 2 (Month 4): ' + fmt(tranche2),
+    '  • Tranche 3 (end of Year 1, prepays Year 2): ' + fmt(y2),
+    '  • Tranche 4 (end of Year 2, prepays Year 3): ' + fmt(y3),
+    '  • 3-Year Total: ' + fmt(total3yr) + (savings > 0 ? ' (' + fmt(savings) + ' saved)' : ''),
+    '',
+    'COMMITMENT: By end of Year 3, ' + branch + ' is self-sufficient — no further donor dollars required.',
+    pathwaySpecific
+  ].filter(x => x !== null).join('\n');
+
+  navigator.clipboard.writeText(lines).then(() => {
+    const toast = $('#copyToast');
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 2600);
+  });
+}
+
+/* ===================== Init ===================== */
+showStep(1);
+renderTracker();
+</script>
+
+</body>
+</html>
